@@ -13,19 +13,18 @@ def main():
             rdr.wait_for_tag()
             (error, tag_type) = rdr.request()
             if not error:
-                print("Tag detected2")
+                print("Tag detected")
                 (error, uid_list) = rdr.anticoll()
                 if not error:
                     uid = ''
                     for element in uid_list:
-                        uid += str(element)
+                        uid += str(hex(element)[2:])
                     print("UID: " + uid)
                     status = request_unlock(uid)
                     if status == 0:
                         pulse_relay()
-                        delay(100)
+                        delay(1000)
     except:
-        GPIO.cleanup()
         rdr.cleanup()
 
 if __name__== "__main__":
