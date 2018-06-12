@@ -6,12 +6,12 @@ import time
 import RPi.GPIO as GPIO
 import io
 import time
-from door_service import flash_led, pulse_relay
-import api_services
+from gpio_utils import flash_led, pulse_relay
+from api_utils import send_log
 
 # Asterisk SIP credentials
-USERNAME = "201"
-PASSWORD = "porta"
+USERNAME = '201'
+PASSWORD = 'porta'
 
 # These pin numbers refer to the GPIO.BCM numbers.
 CALL_BUTTON_PIN  = 18    # Button to trigger start outgoing call.
@@ -22,10 +22,10 @@ WAITSECONDS = 60
 # Asterisk Host
 host = '192.168.88.41'
 
-# doorbellToAddress is the SIP (or URL) address that will be called when the "doorbell" is pressed.
-doorbellToAddress = 'sip:666@' + host  # Who to "ring". SIP address format
+# doorbellToAddress is the SIP (or URL) address that will be called when the 'doorbell' is pressed.
+doorbellToAddress = 'sip:666@' + host  # Who to 'ring'. SIP address format
 
-# Sound for local "doorbell ring". Person pushing button hears this.
+# Sound for local 'doorbell ring'. Person pushing button hears this.
 # doorBellSoundWav = './sounds/doorbell-1.wav' 
 
 class SecurityCamera:
@@ -60,14 +60,14 @@ class SecurityCamera:
 
     # Only enable PCMU and PCMA audio codecs
     for codec in self.core.audio_codecs:
-      if codec.mime_type == "PCMA" or codec.mime_type == "PCMU":
+      if codec.mime_type == 'PCMA' or codec.mime_type == 'PCMU':
         self.core.enable_payload_type(codec, True)
       else:
         self.core.enable_payload_type(codec, False)
 
     # Only enable VP8 video codec
     for codec in self.core.video_codecs:
-      if codec.mime_type == "VP8":
+      if codec.mime_type == 'VP8':
         self.core.enable_payload_type(codec, True)
       else:
         self.core.enable_payload_type(codec, False)
@@ -104,7 +104,7 @@ class SecurityCamera:
     self.core.add_auth_info(auth_info)
 
   def dtmf_received(self, core, call, digits):
-    logging.debug("on_dtmf_digit (%s)", str(digits))
+    logging.debug('on_dtmf_digit (%s)', str(digits))
     digits = chr(digits)
   
   def run(self):
@@ -117,9 +117,9 @@ class SecurityCamera:
         button_call_pressed = not GPIO.input(CALL_BUTTON_PIN)
 
       if button_call_pressed and self.core.current_call is None:
-        # We do not check the time here. They can keep "ringing" the doorbell if they want
+        # We do not check the time here. They can keep 'ringing' the doorbell if they want
         # but it won't matter once a call is initiated.
-        print("Call button pressed!")
+        print('Call button pressed!')
 
         try:
           params = self.core.create_call_params(None)
@@ -133,7 +133,7 @@ class SecurityCamera:
           flash_led(stay_on=True)
           
           if None is self.current_call:
-            logging.error("Error creating call and inviting with params... outgoing call aborted.")
+            logging.error('Error creating call and inviting with params... outgoing call aborted.')
 
         except KeyboardInterrupt:
           self.quit = True
@@ -147,5 +147,5 @@ def main():
   door = SecurityCamera(username=USERNAME, password=PASSWORD, whitelist=[('sip:210@'+host)], camera='Webcam V4L2: /dev/video0', snd_capture='ALSA: USB2.0 PC CAMERA', snd_playback='ALSA: VM-5')
   door.run()
 
-if __name__== "__main__":
+if __name__== '__main__':
   main()
