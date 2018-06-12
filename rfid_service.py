@@ -19,11 +19,11 @@ def main():
                 if not error:
                     uid = ''
                     for element in uid_list:
-                        uid += str(hex(element)[2:])
+                        uid += str(hex(element)[2:]).capitalize()
                     print("UID: " + uid)
                     status = request_unlock(uid)
                     if status == 0:
-                        print("Autthorized")
+                        print("Authorized")
                         pulse_relay()
                         time.sleep(3)
                     else:
