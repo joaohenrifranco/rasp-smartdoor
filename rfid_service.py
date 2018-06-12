@@ -23,8 +23,11 @@ def main():
                     print("UID: " + uid)
                     status = request_unlock(uid)
                     if status == 0:
+                        print("Autorizado!")
                         pulse_relay()
                         time.sleep(3)
+                    elif:
+                        print("Erro de autenticação")
     except:
         rdr.cleanup()
 
