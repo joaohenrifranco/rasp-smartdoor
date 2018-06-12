@@ -26,7 +26,7 @@ def main():
                         print("Autorizado!")
                         pulse_relay()
                         time.sleep(3)
-                    elif:
+                    else:
                         print("Erro de autenticação")
     except:
         rdr.cleanup()
