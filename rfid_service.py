@@ -4,6 +4,7 @@ from gpio_utils import flash_led, pulse_relay
 from api_utils import request_unlock
 from pirc522 import RFID
 import re
+import time
 
 rdr = RFID()
 
@@ -23,7 +24,7 @@ def main():
                     status = request_unlock(uid)
                     if status == 0:
                         pulse_relay()
-                        delay(1000)
+                        time.sleep(3)
     except:
         rdr.cleanup()
 
