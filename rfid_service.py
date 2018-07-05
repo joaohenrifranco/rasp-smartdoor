@@ -7,10 +7,10 @@ from pirc522 import RFID
 import re
 import time
 
-rdr = RFID()
-
 def main():
+
     try:
+        rdr = RFID()
         while True:
             rdr.wait_for_tag()
             (error, tag_type) = rdr.request()

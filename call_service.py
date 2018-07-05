@@ -8,7 +8,6 @@ import RPi.GPIO as GPIO
 import io
 import time
 from gpio_utils import flash_led, pulse_relay
-from api_utils import send_log
 
 # Asterisk SIP credentials
 USERNAME = '201'
@@ -42,7 +41,7 @@ class SecurityCamera:
     }
 
     # Configure the linphone core
-    #logging.basicConfig(level=logging.INFO)
+    logging.basicConfig(level=logging.INFO)
     signal.signal(signal.SIGINT, self.signal_handler)
     linphone.set_log_handler(self.log_handler)
     self.core = linphone.Core.new(callbacks, None, None)
@@ -106,7 +105,8 @@ class SecurityCamera:
 
   def dtmf_received(self, core, call, digits):
     logging.debug('on_dtmf_digit (%s)', str(digits))
-    digits = chr(digits)
+    print("OPEN DOOR!")
+    pulse_relay()
   
   def run(self):
     while not self.quit:
