@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+
 import linphone
 import logging
 import signal
