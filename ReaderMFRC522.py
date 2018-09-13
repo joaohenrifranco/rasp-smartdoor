@@ -1,7 +1,5 @@
 # Code by Gabriel Milan https://github.com/gabriel-milan/
 # Adapted from SimpleMFRC522 @ https://github.com/pimylifeup/MFRC522-python
-
-import RPi.GPIO as GPIO
 from MFRC522 import MFRC522
   
 class ReaderMFRC522:

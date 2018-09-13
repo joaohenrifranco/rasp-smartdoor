@@ -18,11 +18,11 @@ def main():
             print (status)
             if (status == 0):
                 print ("Authorized")
-                pulse_relay(delay=2)
+                pulse_relay()
             else:
                 print ("Auth error")
-    finally:
-        GPIO.cleanup()      
+    except:
+        print ("RFID error")
 
-if __name__== "__main__":
+if __name__ == '__main__':
     main()

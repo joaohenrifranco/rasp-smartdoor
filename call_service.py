@@ -7,14 +7,11 @@ import time
 import RPi.GPIO as GPIO
 import io
 import time
-from gpio_utils import flash_led, pulse_relay
+from gpio_utils import flash_led, pulse_relay, setup, CALL_BUTTON_PIN
 
 # Asterisk SIP credentials
 USERNAME = '201'
 PASSWORD = 'porta'
-
-# These pin numbers refer to the GPIO.BCM numbers.
-CALL_BUTTON_PIN  = 18    # Button to trigger start outgoing call.
 
 # WAITSECONDS controls the amount of time calling from doorbell.
 WAITSECONDS = 60
@@ -31,8 +28,7 @@ doorBellSoundWav = './sounds/doorbell-1.wav'
 class SecurityCamera:
   def __init__(self, username='', password='', whitelist=[], camera='', snd_capture='', snd_playback=''):
     self.quit = False
-    GPIO.setmode(GPIO.BCM) # set pin numbering mode using GPIO.setmode(GPIO.BCM)
-    GPIO.setup(CALL_BUTTON_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    setup()
 
     self.whitelist = whitelist
     callbacks = {
@@ -145,5 +141,5 @@ def main():
   door = SecurityCamera(username=USERNAME, password=PASSWORD, whitelist=[('sip:210@'+host)], camera='Webcam V4L2: /dev/video0', snd_capture='ALSA: VM-5', snd_playback='ALSA: default device')
   door.run()
 
-if __name__== '__main__':
+if __name__ == '__main__':
   main()

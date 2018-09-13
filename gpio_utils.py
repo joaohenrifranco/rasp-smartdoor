@@ -2,8 +2,9 @@ import RPi.GPIO as GPIO
 import time
 
 # These pin numbers refer to the GPIO.BCM numbers.
-RELAY_PIN = 5
-LED_PIN = 23
+RELAY_PIN = 5             # Relay that unlocks door
+LED_PIN = 23              # LED for the CALL_BUTTON
+CALL_BUTTON_PIN  = 18     # Button to trigger start outgoing call.
 
 def setup():
   GPIO.setmode(GPIO.BCM)            # Set pin numbering mode using GPIO.setmode(GPIO.BCM)
@@ -11,6 +12,7 @@ def setup():
   GPIO.output(RELAY_PIN, 1)         # Keep door locked
   GPIO.setup(LED_PIN, GPIO.OUT)
   GPIO.output(LED_PIN, 1)           # Keep this LED ON.
+  GPIO.setup(CALL_BUTTON_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 def pulse_relay(relay_pin=RELAY_PIN, delay=2):
   setup()
@@ -20,7 +22,6 @@ def pulse_relay(relay_pin=RELAY_PIN, delay=2):
 
 def flash_led(led_pin=LED_PIN, stay_on=False, delay=0.1, blink_count=10):
   setup()
-
   for j in range(0, blink_count):
     GPIO.output(led_pin, True)
     time.sleep(delay)
