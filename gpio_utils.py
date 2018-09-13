@@ -12,7 +12,7 @@ def setup():
   GPIO.setup(LED_PIN, GPIO.OUT)
   GPIO.output(LED_PIN, 1)           # Keep this LED ON.
 
-def pulse_relay(relay_pin=RELAY_PIN, delay=1):
+def pulse_relay(relay_pin=RELAY_PIN, delay=2):
   setup()
   GPIO.output(relay_pin, False)
   time.sleep(delay)
