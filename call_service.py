@@ -26,7 +26,7 @@ host = '192.168.88.41'
 doorbellToAddress = 'sip:666@' + host  # Who to 'ring'. SIP address format
 
 # Sound for local 'doorbell ring'. Person pushing button hears this.
-# doorBellSoundWav = './sounds/doorbell-1.wav' 
+doorBellSoundWav = './sounds/doorbell-1.wav' 
 
 class SecurityCamera:
   def __init__(self, username='', password='', whitelist=[], camera='', snd_capture='', snd_playback=''):
@@ -145,7 +145,7 @@ class SecurityCamera:
       time.sleep(0.03)
 
 def main():
-  door = SecurityCamera(username=USERNAME, password=PASSWORD, whitelist=[('sip:210@'+host)], camera='Webcam V4L2: /dev/video0', snd_capture='ALSA: USB2.0 PC CAMERA', snd_playback='ALSA: VM-5')
+  door = SecurityCamera(username=USERNAME, password=PASSWORD, whitelist=[('sip:210@'+host)], camera='Webcam V4L2: /dev/video0', snd_capture='ALSA: VM-5', snd_playback='ALSA: default device')
   door.run()
 
 if __name__== '__main__':
