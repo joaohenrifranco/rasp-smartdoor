@@ -84,14 +84,8 @@ class SecurityCamera:
 
   def call_state_changed(self, core, call, state, message):
     if state == linphone.CallState.IncomingReceived:
-      if call.remote_address.as_string_uri_only() in self.whitelist:
-        params = core.create_call_params(call)
-        core.accept_call_with_params(call, params)
-      else:
-        core.decline_call(call, linphone.Reason.Declined)
-        chat_room = core.get_chat_room_from_uri(self.whitelist[0])
-        msg = chat_room.create_message(call.remote_address_as_string + ' tried to call')
-        chat_room.send_chat_message(msg)
+      params = core.create_call_params(call)
+      core.accept_call_with_params(call, params)
 
   def configure_sip_account(self, username, password):
     # Configure the SIP account
@@ -105,9 +99,12 @@ class SecurityCamera:
 
   def dtmf_received(self, core, call, digits):
     logging.debug('on_dtmf_digit (%s)', str(digits))
+    print("#\n" * 10)
     print("OPEN DOOR!")
+    print("#\n" * 10)
     pulse_relay()
-  
+    core.terminate_all_calls()
+
   def run(self):
     while not self.quit:
       # Check the push buttons
@@ -131,7 +128,7 @@ class SecurityCamera:
           address = linphone.Address.new(doorbellToAddress)
           
           self.current_call = self.core.invite_address_with_params(address, params)
-          flash_led(stay_on=True)
+          flash_led(delay=0.2, stay_on=True)
           
           if None is self.current_call:
             logging.error('Error creating call and inviting with params... outgoing call aborted.')

@@ -29,7 +29,5 @@ def flash_led(led_pin=LED_PIN, stay_on=False, delay=0.1, blink_count=10):
   if stay_on:
     GPIO.output(led_pin, True)
   
-  GPIO.cleanup(led_pin)
-
 if __name__ == '__main__':
   setup()
