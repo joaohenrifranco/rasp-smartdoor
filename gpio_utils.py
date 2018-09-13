@@ -6,18 +6,17 @@ RELAY_PIN = 5
 LED_PIN = 23
 
 def setup():
-  GPIO.setmode(GPIO.BCM) # set pin numbering mode using GPIO.setmode(GPIO.BCM)
+  GPIO.setmode(GPIO.BCM)            # Set pin numbering mode using GPIO.setmode(GPIO.BCM)
   GPIO.setup(RELAY_PIN, GPIO.OUT)
-  GPIO.output(RELAY_PIN, 0)
+  GPIO.output(RELAY_PIN, 1)         # Keep door locked
   GPIO.setup(LED_PIN, GPIO.OUT)
-  GPIO.output(LED_PIN, 1)     # Keep this LED ON.
+  GPIO.output(LED_PIN, 1)           # Keep this LED ON.
 
 def pulse_relay(relay_pin=RELAY_PIN, delay=1):
   setup()
   GPIO.output(relay_pin, False)
   time.sleep(delay)
   GPIO.output(relay_pin, True)
-  GPIO.cleanup(relay_pin)
 
 def flash_led(led_pin=LED_PIN, stay_on=False, delay=0.1, blink_count=10):
   setup()
@@ -31,3 +30,6 @@ def flash_led(led_pin=LED_PIN, stay_on=False, delay=0.1, blink_count=10):
     GPIO.output(led_pin, True)
   
   GPIO.cleanup(led_pin)
+
+if __name__ == '__main__':
+  setup()
