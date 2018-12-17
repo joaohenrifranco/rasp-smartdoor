@@ -3,8 +3,8 @@ import time
 
 # These pin numbers refer to the GPIO.BCM numbers.
 RELAY_PIN = 5             # Relay that unlocks door
-LED_PIN = 23              # LED for the CALL_BUTTON
-CALL_BUTTON_PIN  = 18     # Button to trigger start outgoing call.
+LED_PIN = 13              # LED for the CALL_BUTTON
+CALL_BUTTON_PIN  = 19     # Button to trigger start outgoing call.
 
 def setup():
   GPIO.setmode(GPIO.BCM)            # Set pin numbering mode using GPIO.setmode(GPIO.BCM)

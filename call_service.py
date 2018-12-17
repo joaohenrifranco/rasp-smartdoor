@@ -23,7 +23,7 @@ host = '192.168.88.41'
 doorbellToAddress = 'sip:666@' + host  # Who to 'ring'. SIP address format
 
 # Sound for local 'doorbell ring'. Person pushing button hears this.
-doorBellSoundWav = './sounds/doorbell-1.wav' 
+doorBellSoundWav = '../sounds/doorbell-1.wav' 
 
 class SecurityCamera:
   def __init__(self, username='', password='', whitelist=[], camera='', snd_capture='', snd_playback=''):
@@ -42,13 +42,14 @@ class SecurityCamera:
     linphone.set_log_handler(self.log_handler)
     self.core = linphone.Core.new(callbacks, None, None)
     self.core.max_calls = 1
-    self.core.echo_cancellation_enabled = False
+    self.core.echo_cancellation_enabled = True
     self.core.video_capture_enabled = True
     self.core.video_display_enabled = False
     self.core.stun_server = host
     self.core.firewall_policy = linphone.FirewallPolicy.PolicyUseIce
     if len(camera):
       self.core.video_device = camera
+
     if len(snd_capture):
       self.core.capture_device = snd_capture
     if len(snd_playback):
@@ -99,7 +100,6 @@ class SecurityCamera:
     print("OPEN DOOR!")
     print("#\n" * 10)
     pulse_relay()
-    core.terminate_all_calls()
 
   def run(self):
     while not self.quit:
@@ -122,7 +122,7 @@ class SecurityCamera:
           params.audio_multicast_enabled = False  # Set these = True if you want multiple
           params.video_multicast_enabled = False  # people to connect at once.
           address = linphone.Address.new(doorbellToAddress)
-          
+          self.core.play_local(doorBellSoundWav)
           self.current_call = self.core.invite_address_with_params(address, params)
           flash_led(delay=0.2, stay_on=True)
           
@@ -138,7 +138,7 @@ class SecurityCamera:
       time.sleep(0.03)
 
 def main():
-  door = SecurityCamera(username=USERNAME, password=PASSWORD, whitelist=[('sip:210@'+host)], camera='Webcam V4L2: /dev/video0', snd_capture='ALSA: VM-5', snd_playback='ALSA: default device')
+  door = SecurityCamera(username=USERNAME, password=PASSWORD, whitelist=[('sip:210@'+host)], camera='Webcam V4L2: /dev/video0', snd_capture='ALSA: USB camera', snd_playback='ALSA: default device')
   door.run()
 
 if __name__ == '__main__':
