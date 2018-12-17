@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import os
 import linphone
 import logging
 import signal
@@ -7,7 +8,7 @@ import time
 import RPi.GPIO as GPIO
 import io
 import time
-from gpio_utils import flash_led, pulse_relay, setup, CALL_BUTTON_PIN
+from gpio_utils import flash_led, pulse_relay, setup, CALL_BUTTON_PIN, DOORBELL_PIN, DOOR_BUTTON_PIN, DOOR_PIN
 
 # Asterisk SIP credentials
 USERNAME = '201'
@@ -37,7 +38,7 @@ class SecurityCamera:
     }
 
     # Configure the linphone core
-    logging.basicConfig(level=logging.INFO)
+    # logging.basicConfig(level=logging.INFO)
     signal.signal(signal.SIGINT, self.signal_handler)
     linphone.set_log_handler(self.log_handler)
     self.core = linphone.Core.new(callbacks, None, None)
@@ -99,18 +100,28 @@ class SecurityCamera:
     print("#\n" * 10)
     print("OPEN DOOR!")
     print("#\n" * 10)
+    os.system('aplay /home/pi/sounds/OPEN_DOOR.wav')
     pulse_relay()
 
   def run(self):
     while not self.quit:
       # Check the push buttons
       button_call_pressed = False
-      button_select_pressed = False
-      
+      button_select_pressed = False     
+      button_door_pressed = False
+ 
       if 0 != CALL_BUTTON_PIN:
         button_call_pressed = not GPIO.input(CALL_BUTTON_PIN)
 
+      if 0 != DOOR_BUTTON_PIN:
+        button_door_pressed = not GPIO.input(DOOR_BUTTON_PIN)
+
+      if button_door_pressed:
+        os.system('aplay /home/pi/sounds/OPEN_DOOR.wav')
+        pulse_relay()
+
       if button_call_pressed and self.core.current_call is None:
+        pulse_relay(DOORBELL_PIN, delay=0.2, invert = True)
         # We do not check the time here. They can keep 'ringing' the doorbell if they want
         # but it won't matter once a call is initiated.
         print('Call button pressed!')

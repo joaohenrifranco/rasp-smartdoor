@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 
 from subprocess import Popen
+from gpio_utils import setup
+
 
 PATH = "/home/pi/raspdoor/"
 
@@ -10,4 +12,5 @@ def main ():
         Popen(process)
 
 if __name__ == '__main__':
+    # setup()
     main()

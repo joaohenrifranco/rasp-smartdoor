@@ -1,13 +1,13 @@
-#!/usr/bin/env python
+#! /bin/sh
 
-from subprocess import Popen
+### BEGIN INIT INFO
+# Provides:          smart_door.sh
+# Required-Start:    $network $syslog
+# Required-Stop:     $network $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start smart_door.sh at boot time
+# Description:       Enable service provided by smart_door.sh.
+### END INIT INFO
 
-PATH = "/home/pi/raspdoor/"
-
-def main ():
-    processes = [PATH + 'call_service.py', PATH + 'rfid_service.py']
-    for process in processes:
-        Popen(process)
-
-if __name__ == '__main__':
-    main()
+nohup python /home/pi/raspdoor/main.py &
