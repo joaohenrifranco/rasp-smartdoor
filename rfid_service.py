@@ -20,10 +20,10 @@ def main():
             print (status)
             if (status == 0):
                 print ("Authorized")
-		os.system('aplay /home/pi/sounds/OPEN_DOOR.wav')
+	        os.system('aplay /home/pi/sounds/OPEN_DOOR.wav')
                 pulse_relay()
             else:
-		os.system('aplay /home/pi/sounds/ERROR.wav')
+	        os.system('aplay /home/pi/sounds/ERROR.wav')
                 print ("Auth error")
     except:
         print ("RFID error")

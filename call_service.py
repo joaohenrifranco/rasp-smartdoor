@@ -12,16 +12,16 @@ from gpio_utils import flash_led, pulse_relay, setup, CALL_BUTTON_PIN, DOORBELL_
 
 # Asterisk SIP credentials
 USERNAME = '201'
-PASSWORD = 'porta'
+PASSWORD = 'porta201'
 
 # WAITSECONDS controls the amount of time calling from doorbell.
 WAITSECONDS = 60
 
 # Asterisk Host
-host = '192.168.88.41'
+host = '192.168.88.159'
 
 # doorbellToAddress is the SIP (or URL) address that will be called when the 'doorbell' is pressed.
-doorbellToAddress = 'sip:666@' + host  # Who to 'ring'. SIP address format
+doorbellToAddress = 'sip:111@' + host  # Who to 'ring'. SIP address format
 
 # Sound for local 'doorbell ring'. Person pushing button hears this.
 doorBellSoundWav = '../sounds/doorbell-1.wav' 
@@ -38,7 +38,7 @@ class SecurityCamera:
     }
 
     # Configure the linphone core
-    # logging.basicConfig(level=logging.INFO)
+    logging.basicConfig(level=logging.INFO)
     signal.signal(signal.SIGINT, self.signal_handler)
     linphone.set_log_handler(self.log_handler)
     self.core = linphone.Core.new(callbacks, None, None)
